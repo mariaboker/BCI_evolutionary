@@ -49,17 +49,15 @@ function W = treinamento(H, vrotulos, eletrodos)
     end
 
 
-        %%%%%%%% AQUI SO PEGA OS ROTULOS E OS W DOS ELETRODOS DA VEZ
-        % Calculo da matriz W usada na solucao otima
-        W = pinv(H_trein) * vrotulos_trein;
+    %%%%%%%% AQUI SO PEGA OS ROTULOS E OS W DOS ELETRODOS DA VEZ
+    % Calculo da matriz W usada na solucao otima
+    W = pinv(H_trein) * vrotulos_trein;
 
-        % Calculo da saida do Classificador
-        y = H_trein * W;
+    % Calculo da saida do Classificador
+    y = H_trein * W;
 
 
-        EQM = mean((y - vrotulos_trein).^2);
-        Erro = (0.5 * sum(abs(sign(y) - vrotulos_trein))) / length(y);
+    EQM = mean((y - vrotulos_trein).^2);
+    Erro = (0.5 * sum(abs(sign(y) - vrotulos_trein))) / length(y);
 
-        % printf('EQM Trein = %d e NumSessoes Trein = %d\n', EQM, Erro);
-
-end
+    % printf('EQM Trein = %d e NumSessoes Trein = %d\n', EQM, Erro);
