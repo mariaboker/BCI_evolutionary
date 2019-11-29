@@ -45,7 +45,7 @@ function [H, vrotulos] = trataSinais(sujeito)
         %%%%% EXTRACAO DE CARACTERISTICAS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       
         % Cada linha da matriz possui o conjunto de atributos janela atual
-        % Cada elemento da linha � um atributo e cada conjunto de 3 elementos relaciona-se com um eletrodo
+        % Cada elemento da linha é um atributo e cada conjunto de 3 elementos relaciona-se com um eletrodo
 
         % para a mao esquerda
 
@@ -81,7 +81,7 @@ function [H, vrotulos] = trataSinais(sujeito)
         Hsessao = vertcat(Hesq, Hdir);
 
         % Cria-se um vetor de rotulos de acordo com a mao que a linha representa
-        % Conven磯: -1 para esquerda e +1 para direita
+        % Convenç£¯: -1 para esquerda e +1 para direita
         vrotulos_sessao = ones(8 * 2, 1);
         
         for k = 1:8
@@ -95,4 +95,3 @@ function [H, vrotulos] = trataSinais(sujeito)
         vrotulos = vertcat(vrotulos, vrotulos_sessao)
 
     end
-H
