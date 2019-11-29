@@ -1,5 +1,7 @@
 function fitness = fit(populacao)
 
+	sujeito = '123223';
+
     % pre alocacao de vetores para maior velocidade
     %fitness = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
     %EQM_pop = [1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000];
@@ -21,8 +23,11 @@ function fitness = fit(populacao)
             end
         end
 
-		W_atual = treinamento(eletrodos); 				 %% passa os eletrodos da populacao para treinamento
-		[~, EQM_atual] = teste(eletrodos, W_atual);		 %% testa com aquela populacao
+
+        [H, vrotulos] = trataSinais(sujeito);
+
+		W_atual = treinamento(H, vrotulos, eletrodos); 				 %% passa os eletrodos da populacao para treinamento
+		[~, EQM_atual] = teste(H, vrotulos, eletrodos, W_atual);		 %% testa com aquela populacao
 
 		EQM_pop(kk) = EQM_atual; 	%% vetor guarda os EQM de cada individuo da populacao 
 
