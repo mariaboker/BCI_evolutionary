@@ -5,7 +5,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % obs tipo_erro deve ser EQM para obter quadratico medio, e qualquer outra coisa para o numero de sessoes
-function [ErroSess, EQM] = teste(eletrodos, W)
+function [ErroSess, EQM] = teste(H, vrotulos, eletrodos, W)
 
     global nsess_total 20;
     global nsess_trein = nsess_total * 0.7;
