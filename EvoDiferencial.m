@@ -13,6 +13,11 @@ clear all;
 
 close all;
 
+
+sujeito = '156571_20161107';
+
+[H, vrotulos] = trataSinais(sujeito);
+
 %% parametros da interface
 numAtrib = 16;  % 20 atributos a serem selecionados = 16 eletrodos + 4 bandas
 tamPop = 20; 	% tamanho da populacao
@@ -62,23 +67,31 @@ for it = 1:Nit
         end
         
         % COMPETICAO SIMPLES - selecao
-			if fit(u) >= fit(populacao(x1,:))
+        [fitu, ~] = fit( H, vrotulos, u);
+        [fitpopulacao,~] = fit( H, vrotulos, populacao(x1,:));
+			if fitu >= fitpopulacao
 				populacao(x1,:) = u;		% individuo intermediario criado eh selecionado para substituir original
 			end
     end
     
-    fitness_atual = fit(populacao);
+    [fitness_atual,Erro] = fit( H, vrotulos, populacao);
     
     fitness_max(it) = max(fitness_atual);
-    
     fitness_medio(it) = mean(fitness_atual);
+    
+    ErroGeracoes(it) = mean(Erro);
+    ErrominGer(it) = min(Erro);
     
 end
 
+
 figure(1)
-
 plot(fitness_max);
-
 hold on
-
 plot(fitness_medio,'r')
+
+plot(ErroGeracoes, 'k');
+hold on;
+plot(ErrominGer, 'g');
+hold on;
+
