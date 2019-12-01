@@ -13,17 +13,20 @@ clear all;
 
 close all;
 
+sujeito = '156571';
+
+[H, vrotulos] = trataSinais(sujeito);
 
 %% probabilidades de ocorrerem os fenomenos geneticos
-probCross = 0.5;
-probTroca = 0.2;
-probMut = 0.1;
+probCross = 0.9;
+probTroca = 0.5;
+probMut = 0.2;
 
 %% parametros da interface
 numAtrib = 16; % 20 atributos a serem selecionados = 16 eletrodos + 4 bandas
 tamPop = 20; % tamanho da populacao
 
-% garantir que tamPop é par
+% garantir que tamPop Ã© par
 if mod(tamPop,2) > 0
     tamPop = tamPop+1;
 end
@@ -31,16 +34,16 @@ end
 % Gera populacao inicial de pais (vetores binarios aleatorios)
 populacao = randi([0 1], tamPop, numAtrib); % matriz populacao com atributos 0s e 1s 
 
-% Número de Iterações
+% NÃºmero de IteraÃ§Ãµes
+Nit = 150;
+global ErroIt;
 
-Nit = 100;
-
-%%%%%	INICIO DO CICLO
+%% %%%	INICIO DO CICLO
 
 for it = 1:Nit
-
+    it
 	% Calculo do valor da funcao fitness para cada individuo da populacao
-	fitness = fit(populacao);	% guarda os valores em um vetor fitness
+	fitness = fit(H, vrotulos, populacao);	% guarda os valores em um vetor fitness
 
 
 	%% Inicio CROSSOVER
@@ -72,10 +75,11 @@ for it = 1:Nit
 			troca = rand(1, numAtrib); 	% vetor aleatorio com probabilidades de troca para cada atributo
 			
 			for kk = 1:numAtrib
-				if troca(kk) <= probTroca 	% ocorre TROCA de material genetico (atributos) entre os individuos!!
+				if troca(kk) <= probTroca 	% ocorre TROCA de material genetico entre os individuos!!
 					aux = f(1, kk);
 					f(1, kk) = f(2, kk);
 					f(2, kk) = aux;
+                    disp('teve troca');
 				end
             end
         end
@@ -95,6 +99,7 @@ for it = 1:Nit
 		for kk = 1:numAtrib
 			if mascMut(k, kk) <= probMut 	% ocorre mutacao
 				filhos(k, kk) = 1 - filhos(k, kk); % realiza a MUTACAO
+                disp('teve mutacao');
 			end
 		end
     end
@@ -105,7 +110,7 @@ for it = 1:Nit
 	pop = vertcat(populacao, filhos); 
 
 	% Calculo do valor da funcao fitness para cada individuo da populacao total (pais + filhos)
-	fitness_pop = fit(pop);	% guarda os valores em um vetor fitness
+	fitness_pop = fit(H, vrotulos, pop);	% guarda os valores em um vetor fitness
     
 	[fitness_pop,indices] = sortrows(fitness_pop'); 	% ordena os fitness
     pop = pop(indices,:); % reordena a matriz populacao em ordem crescente de fitness
@@ -120,12 +125,16 @@ for it = 1:Nit
     fitmedio(it) = mean(fitness); % calcula o fitness medio da iteracao atual (GLOBAL)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    figure(2);
+    figure(1);
     plot(fitmaior, 'b');
     hold on;
     plot(fitmedio, 'r');
+    hold on;
     
-
+    figure(2);
+    plot(ErroIt);
+    hold on;
     
 end
+
    % fim do CICLO
