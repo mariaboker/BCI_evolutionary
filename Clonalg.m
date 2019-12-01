@@ -12,6 +12,9 @@ clear all;
 
 close all;
 
+sujeito = '156571_20161107';
+
+[H, vrotulos] = trataSinais(sujeito);
 
 %% parametros da interface
 numAtrib = 16;   % 20 atributos a serem selecionados = 16 eletrodos + 4 bandas
@@ -30,8 +33,7 @@ if mod(tamPop,2) > 0
 end
 
 % Gera populacao inicial de pais (vetores binarios aleatorios)
-disp('populacao');
-populacao = randi([0 1], tamPop, numAtrib) % matriz populacao com atributos 0s e 1s 
+populacao = randi([0 1], tamPop, numAtrib); % matriz populacao com atributos 0s e 1s 
 
 	for it = 1:numIt
 
@@ -41,10 +43,8 @@ populacao = randi([0 1], tamPop, numAtrib) % matriz populacao com atributos 0s e
 			for k = 1:numCopias % cria uma matriz com copias do individuo
 				amostragem(k, :) = populacao(atual, :);
             end
-            amostragem
-            disp('populacao');
-            populacao(atual,:)
-            fitness_amostragem = fit(populacao)
+            populacao(atual,:);
+            [fitness_amostragem, ~] = fit(H, vrotulos, populacao);
             
 			%% MUTACAO
 			mascMut = rand(numCopias-1, numAtrib); 	% cria matriz aleatoria com probabilidades de cada atributo sofrer mutacao
@@ -59,10 +59,10 @@ populacao = randi([0 1], tamPop, numAtrib) % matriz populacao com atributos 0s e
 		    end
 
 			% retorna o maior fitness e o indice onde ele se encontra no vetor gerado pela funcao fit nos individuos da amostragem
-			[maior_fit, indice_maior] = max(fit(amostragem), [], 2);
+			[fiti, Erro] = fit(H, vrotulos, amostragem);
+			[maior_fit, indice_maior] = max(fiti, [], 2);
 
 			populacao(atual,:) = amostragem(indice_maior,:); % substitui o individuo original pelo que teve maior fitness 
-			
             
             fitness = [fitness; maior_fit]; % guarda os melhores fitness de cada iteracao
 
@@ -80,18 +80,22 @@ populacao = randi([0 1], tamPop, numAtrib) % matriz populacao com atributos 0s e
     end
     
     fitness_max(it) = max(fitness);
-    
     fitness_medio(it) = mean(fitness);
+    
+    ErroGeracoes(it) = mean(Erro);
+    ErrominGer(it) = min(Erro);
     
     end
     
-    figure(1)
-    
-    plot(fitness_max)
-   
-    hold on
-    
-    plot(fitness_medio,'r')
+figure(1)
+plot(fitness_max)
+hold on
+plot(fitness_medio,'r')
+
+plot(ErroGeracoes, 'k');
+hold on;
+plot(ErrominGer, 'g');
+hold on;
     
     
     
