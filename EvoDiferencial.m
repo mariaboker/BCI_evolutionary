@@ -13,6 +13,7 @@ clear all;
 
 close all;
 
+global EQM_pop;
 
 sujeito = '156571_20161107';
 
@@ -22,7 +23,7 @@ sujeito = '156571_20161107';
 numAtrib = 16;  % 20 atributos a serem selecionados = 16 eletrodos + 4 bandas
 tamPop = 20; 	% tamanho da populacao
 
-Nit = 100; % numero de iteracoes
+Nit = 300; % numero de iteracoes
 
 CR = 0.5;				% propabilidade de crossover
 F = 0.7;				% fator multiplicativo da mutacao
@@ -82,8 +83,11 @@ for it = 1:Nit
     ErroGeracoes(it) = mean(Erro);
     ErrominGer(it) = min(Erro);
     
+    EQMminGeracoes(it) = min(EQM_pop);
+    
 end
 
+EQMminGeracoes(Nit)
 
 figure(1)
 plot(fitness_max);
