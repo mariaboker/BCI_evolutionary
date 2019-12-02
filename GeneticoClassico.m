@@ -13,7 +13,9 @@ clear all;
 
 close all;
 
-sujeito = '156571';
+global EQM_pop;
+
+sujeito = '156571_20161107';
 
 [H, vrotulos] = trataSinais(sujeito);
 
@@ -23,8 +25,8 @@ probTroca = 0.5;
 probMut = 0.2;
 
 %% parametros da interface
-numAtrib = 16; % 20 atributos a serem selecionados = 16 eletrodos + 4 bandas
-tamPop = 20; % tamanho da populacao
+numAtrib = 16; 
+tamPop = 40; % tamanho da populacao
 
 % garantir que tamPop Ã© par
 if mod(tamPop,2) > 0
@@ -35,15 +37,13 @@ end
 populacao = randi([0 1], tamPop, numAtrib); % matriz populacao com atributos 0s e 1s 
 
 % NÃºmero de IteraÃ§Ãµes
-Nit = 150;
-global ErroIt;
+Nit = 50;
 
 %% %%%	INICIO DO CICLO
 
 for it = 1:Nit
-    it
 	% Calculo do valor da funcao fitness para cada individuo da populacao
-	fitness = fit(H, vrotulos, populacao);	% guarda os valores em um vetor fitness
+	[fitness, Erro] = fit(H, vrotulos, populacao);	% guarda os valores em um vetor fitness
 
 
 	%% Inicio CROSSOVER
@@ -79,7 +79,6 @@ for it = 1:Nit
 					aux = f(1, kk);
 					f(1, kk) = f(2, kk);
 					f(2, kk) = aux;
-                    disp('teve troca');
 				end
             end
         end
@@ -99,7 +98,6 @@ for it = 1:Nit
 		for kk = 1:numAtrib
 			if mascMut(k, kk) <= probMut 	% ocorre mutacao
 				filhos(k, kk) = 1 - filhos(k, kk); % realiza a MUTACAO
-                disp('teve mutacao');
 			end
 		end
     end
@@ -110,31 +108,34 @@ for it = 1:Nit
 	pop = vertcat(populacao, filhos); 
 
 	% Calculo do valor da funcao fitness para cada individuo da populacao total (pais + filhos)
-	fitness_pop = fit(H, vrotulos, pop);	% guarda os valores em um vetor fitness
+	[fitness_pop, Erro] = fit(H, vrotulos, pop);	% guarda os valores em um vetor fitness
+    
+    ErroGeracoes(it) = mean(Erro);
+    ErrominGer(it) = min(Erro);
+    EQMminGeracoes(it) = min(EQM_pop);
     
 	[fitness_pop,indices] = sortrows(fitness_pop'); 	% ordena os fitness
     pop = pop(indices,:); % reordena a matriz populacao em ordem crescente de fitness
 
 	fitness = fitness_pop(end-tamPop+1:end); % guarda os ultimos fitness (maiores)
     populacao = pop(end-tamPop+1:end,:); % seleciona os ultimos individuos da populacao (maiores fitness)
-
-
+    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Parametros para criterio de parada - ciclo geral
     fitmaior(it) = fitness(end); % guarda o maior fitness da iteracao atual (GLOBAL)
     fitmedio(it) = mean(fitness); % calcula o fitness medio da iteracao atual (GLOBAL)
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
-    figure(1);
-    plot(fitmaior, 'b');
-    hold on;
-    plot(fitmedio, 'r');
-    hold on;
-    
-    figure(2);
-    plot(ErroIt);
-    hold on;
-    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
 end
 
-   % fim do CICLO
+EQMmenor = EQMminGeracoes(Nit)
+figure(1);
+plot(fitmaior, 'b');
+hold on;
+plot(fitmedio, 'r');
+hold on;
+
+
+plot(ErroGeracoes, 'k');
+hold on;
+plot(ErrominGer, 'g');
+hold on;
