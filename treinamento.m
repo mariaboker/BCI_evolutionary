@@ -7,20 +7,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-
 function W = treinamento(H, vrotulos, eletrodos)
-    global nsess_trein;
-    global valor_string;
 
     %%%%% DEFINICAO DE PARAMETROS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+    global nsess_trein;
+    global valor_string;
+    global nsess_total;
     nsess_total = 10;
 
     nsess_trein = nsess_total * 0.7;
     valor_string = randperm(nsess_total);
-
-    %eletr_uteis = lista_eletrodos(1:length(lista_eletrodos));
-
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -30,7 +27,7 @@ function W = treinamento(H, vrotulos, eletrodos)
     vrotulos_trein  = [];
 
     for k = 1:nsess_trein
-        %indice_sess = valor_string(k) %TROQUEI k por ss
+        %indice_sess = valor_string(k); 
         indice_sess = k; %MUDEI AQUI
         
         Hk = [];
@@ -73,5 +70,4 @@ function W = treinamento(H, vrotulos, eletrodos)
     EQM = mean((y - vrotulos_trein).^2);
     Erro = (0.5 * sum(abs(sign(y) - vrotulos_trein))) / length(y);
     
-
-
+end
