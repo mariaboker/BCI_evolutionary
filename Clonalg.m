@@ -12,16 +12,18 @@ clear all;
 
 close all;
 
+global EQM_pop;
+
 sujeito = '156571_20161107';
 
 [H, vrotulos] = trataSinais(sujeito);
 
 %% parametros da interface
 numAtrib = 16;   % 20 atributos a serem selecionados = 16 eletrodos + 4 bandas
-tamPop = 10;     % tamanho da populacao
+tamPop = 20;     % tamanho da populacao
 numCopias = 5;  % numero de copias que sofrerao mutacao para disputar o local na populacao
 
-numIt = 100; % numero de vezes que acontecera o refinamento dos individuos por mutacao
+numIt = 150; % numero de vezes que acontecera o refinamento dos individuos por mutacao
 numSubst = 0.3 * tamPop; % numero de individuos a serem substituidos por novos aleatorios
 numRefina = 20; % numero de iteracoes ate a inclusao de novos individuos
 
@@ -84,8 +86,12 @@ populacao = randi([0 1], tamPop, numAtrib); % matriz populacao com atributos 0s 
     
     ErroGeracoes(it) = mean(Erro);
     ErrominGer(it) = min(Erro);
+        
+    EQMminGeracoes(it) = min(EQM_pop);
     
     end
+    
+EQMminGeracoes(numIt)
     
 figure(1)
 plot(fitness_max)
