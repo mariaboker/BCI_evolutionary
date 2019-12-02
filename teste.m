@@ -6,19 +6,20 @@
 
 % obs tipo_erro deve ser EQM para obter quadratico medio, e qualquer outra coisa para o numero de sessoes
 function [ErroSess, EQM] = teste(H, vrotulos, eletrodos, W)
+
+    H_teste = [];
+    vrotulos_teste = [];
+    
     global nsess_total 
     nsess_total = 10;
 
     global nsess_trein 
     nsess_trein = nsess_total * 0.7;
     global valor_string;
-    
-    H_teste = [];
-    vrotulos_teste = [];
 
     % Testar com as sessoes que nao foram usadas no treinamento
     for ss = nsess_trein+1:nsess_total 
-        %indice_sess = valor_string(ss)
+        %indice_sess = valor_string(ss);
         indice_sess = ss; 
 
         Hk = [];
@@ -50,6 +51,6 @@ function [ErroSess, EQM] = teste(H, vrotulos, eletrodos, W)
 
 
     EQM = mean((y_teste - vrotulos_teste).^2);
-    ErroSess = (0.5 * sum(abs(sign(y_teste) - vrotulos_teste))) / length(y_teste)
+    ErroSess = (0.5 * sum(abs(sign(y_teste) - vrotulos_teste))) / length(y_teste);
 
-    
+end
