@@ -16,13 +16,10 @@ function [H, vrotulos] = trataSinais(sujeito)
         IDSessao = num2str(ss);
         %%%%% PRE-PROCESSAMENTO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % pre-processa mao esquerda
-        arquivo = ['smr_training_session_' IDSessao '_leftHand_subject_' sujeito '_20161107_lrh.mat'];
+        arquivo = ['smr_training_session_' IDSessao '_leftHand_subject_' sujeito '_lrh.mat'];
         load(arquivo);
 
         sessao = rawData';
-
-        %global num_eletr_orig;
-        %num_eletr_orig = size(sessao, 1);
 
         ref_CAR = mean(sessao);
         matriz_ref_CAR = ones(num_eletr_orig, 1) * ref_CAR;
@@ -30,7 +27,7 @@ function [H, vrotulos] = trataSinais(sujeito)
 
 
         % pre processa mao direita
-        arquivo = ['smr_training_session_' IDSessao '_rightHand_subject_' sujeito '_20161107_lrh.mat'];
+        arquivo = ['smr_training_session_' IDSessao '_rightHand_subject_' sujeito '_lrh.mat'];
         load(arquivo);
 
         sessao = rawData';
@@ -38,7 +35,6 @@ function [H, vrotulos] = trataSinais(sujeito)
         ref_CAR = mean(sessao);
         matriz_ref_CAR = ones(num_eletr_orig, 1) * ref_CAR;
         dados_dir = sessao - matriz_ref_CAR;
-
 
 
         %%%%% EXTRACAO DE CARACTERISTICAS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
